@@ -19,6 +19,6 @@ class EqubGroupSerializer(serializers.ModelSerializer):
         read_only_fields = ["status", "created_at", "updated_at"]
 
     def validate_max_members(self, value):
-        if value < 2:
-            raise serializers.ValidationError("Equb group must have at least 2 members.")
+        if value < 3:
+            raise serializers.ValidationError("Equb group must have at least 3 members.")
         return value
