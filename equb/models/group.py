@@ -1,0 +1,114 @@
+from django.db import models
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from decimal import Decimal
+
+class EqubGroup(models.Model):
+    STATUS_PENDING = 'pending'
+    STATUS_STARTED = 'started'
+    STATUS_COMPLETED = 'completed'
+
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'Pending'),
+        (STATUS_STARTED, 'Started'),
+        (STATUS_COMPLETED, 'Completed'),
+    ]
+
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+    admin = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='owned_groups'
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default=STATUS_PENDING
+    )
+    contribution_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_cycles = models.PositiveIntegerField()
+    current_cycle = models.PositiveIntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    started_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name_plural = "Equb Groups"
+
+    def __str__(self):
+        return f"{self.name} ({self.status})"
+
+    def clean(self):
+        if not self.admin:
+            raise ValidationError("Group must have an admin.")
+        if self.status == self.STATUS_STARTED and not self.started_at:
+            raise ValidationError("Started groups must have a started_at datetime.")
+        if self.status == self.STATUS_COMPLETED and not self.completed_at:
+            raise ValidationError("Completed groups must have a completed_at datetime.")
+        if self.status == self.STATUS_PENDING:
+            if self.started_at or self.completed_at:
+                raise ValidationError("Pending groups cannot have started_at or completed_at set.")
+
+        member_count = self.memberships.filter(status=GroupMember.STATUS_ACTIVE).count()
+        if self.total_cycles < member_count:
+            raise ValidationError(f"Total cycles ({self.total_cycles}) cannot be less than the number of active members ({member_count}).")
+        if self.contribution_amount <= Decimal('0'):
+            raise ValidationError("Contribution amount must be a positive number.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+
+class GroupMember(models.Model):
+    ROLE_ADMIN = 'group_admin'
+    ROLE_MEMBER = 'member'
+
+    ROLE_CHOICES = [
+        (ROLE_ADMIN, 'Group Admin'),
+        (ROLE_MEMBER, 'Member'),
+    ]
+
+    STATUS_ACTIVE = 'active'
+    STATUS_LEFT = 'left'
+    STATUS_REMOVED = 'removed'
+
+    STATUS_CHOICES = [
+        (STATUS_ACTIVE, 'Active'),
+        (STATUS_LEFT, 'Left'),
+        (STATUS_REMOVED, 'Removed'),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='group_memberships'
+    )
+    group = models.ForeignKey(
+        EqubGroup,
+        on_delete=models.CASCADE,
+        related_name='memberships'
+    )
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default=ROLE_MEMBER
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=STATUS_ACTIVE
+    )
+    joined_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'group'], name='unique_user_group_membership')
+        ]
+        ordering = ['joined_at']
+
+    def __str__(self):
+        return f"{self.user.username} in {self.group.name} ({self.role})"
