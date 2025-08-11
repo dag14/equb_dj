@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -13,7 +14,8 @@ class EqubGroup(models.Model):
         (STATUS_STARTED, 'Started'),
         (STATUS_COMPLETED, 'Completed'),
     ]
-
+    
+    id = models.UUIDField(primary_key=True, default = uuid.uuid4, editable = False)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     admin = models.ForeignKey(
@@ -98,7 +100,7 @@ class GroupMember(models.Model):
         (STATUS_LEFT, 'Left'),
         (STATUS_REMOVED, 'Removed'),
     ]
-
+    id = models.UUIDField(primary_key=True, default = uuid.uuid4, editable = False)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
