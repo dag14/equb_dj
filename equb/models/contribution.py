@@ -1,11 +1,13 @@
+import uuid
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from decimal import Decimal
-from .group import EqubGroup, GroupMember  # Import models from group.py
+from .group import EqubGroup, GroupMember
 
 
 class Contribution(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable= False)
     STATUS_PENDING = "pending"
     STATUS_PAID = "paid"
     STATUS_LATE = "late"
@@ -85,6 +87,7 @@ class Contribution(models.Model):
 
 
 class PayoutSchedule(models.Model):
+    id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
     STATUS_SCHEDULED = "scheduled"
     STATUS_PAID = "paid"
     STATUS_DELAYED = "delayed"

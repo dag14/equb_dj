@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -7,6 +8,7 @@ from .group import EqubGroup, GroupMember
 from .contribution import Contribution, PayoutSchedule
 
 class Penalty(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     TYPE_FIXED = "fixed"
     TYPE_PERCENT = "percent"
     TYPE_CHOICES = [

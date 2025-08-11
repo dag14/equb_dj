@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -13,7 +14,7 @@ class EqubGroup(models.Model):
         (STATUS_STARTED, 'Started'),
         (STATUS_COMPLETED, 'Completed'),
     ]
-
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     admin = models.ForeignKey(
@@ -52,7 +53,7 @@ class EqubGroup(models.Model):
             if self.started_at or self.completed_at:
                 raise ValidationError("Pending groups cannot have started_at or completed_at set.")
 
-        member_count = self.memberships.filter(status=GroupMember.STATUS_ACTIVE).count()
+        member_count = self.memberships.filter(status="active").count()
         if self.total_cycles < member_count:
             raise ValidationError(f"Total cycles ({self.total_cycles}) cannot be less than the number of active members ({member_count}).")
         if self.contribution_amount <= Decimal('0'):
@@ -64,6 +65,7 @@ class EqubGroup(models.Model):
 
 
 class GroupMember(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     ROLE_ADMIN = 'group_admin'
     ROLE_MEMBER = 'member'
 
