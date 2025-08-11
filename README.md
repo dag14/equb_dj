@@ -40,9 +40,10 @@ equb_backend
 │  │     ├─ group.cpython-313.pyc
 │  │     ├─ penalty.cpython-313.pyc
 │  │     └─ __init__.cpython-313.pyc
-│  ├─ models.py
 │  ├─ serializers
-│  │  └─ equb_group_serializer.py
+│  │  ├─ equb_group_serializer.py
+│  │  └─ __pycache__
+│  │     └─ equb_group_serializer.cpython-313.pyc
 │  ├─ tests.py
 │  ├─ urls.py
 │  ├─ views
@@ -72,6 +73,7 @@ equb_backend
 │     ├─ wsgi.cpython-313.pyc
 │     └─ __init__.cpython-313.pyc
 ├─ manage.py
+├─ README.md
 └─ venv
    ├─ Include
    ├─ Lib

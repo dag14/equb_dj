@@ -8,7 +8,7 @@ class EqubGroupSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "description",
-            "status",       # "pending", "started", "completed"
+            "status",     
             "rotation_rule",
             "max_members",
             "start_date",
@@ -22,3 +22,9 @@ class EqubGroupSerializer(serializers.ModelSerializer):
         if value < 3:
             raise serializers.ValidationError("Equb group must have at least 3 members.")
         return value
+    def validate(self, data):
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        if start_date and end_date and start_date >= end_date:
+            raise serializers.ValidationError("start_date must be before end_date.")
+        return data
