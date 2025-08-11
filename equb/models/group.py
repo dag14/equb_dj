@@ -34,6 +34,23 @@ class EqubGroup(models.Model):
     started_at = models.DateTimeField(null=True, blank=True)
     completed_at = models.DateTimeField(null=True, blank=True)
 
+    ROTATION_RANDOM = 'random'
+    ROTATION_SEQUENTIAL = 'sequential'
+    ROTATION_CUSTOM = 'custom'
+
+    ROTATION_CHOICES = [
+        (ROTATION_RANDOM, 'Random'),
+        (ROTATION_SEQUENTIAL, 'Sequential'),
+        (ROTATION_CUSTOM, 'Custom'),
+    ]
+
+    rotation_rule = models.CharField(
+        max_length=20,
+        choices=ROTATION_CHOICES,
+        default=ROTATION_RANDOM,
+        help_text="Defines the payout rotation logic for the Equb group"
+    )
+
     class Meta:
         ordering = ['-created_at']
         verbose_name_plural = "Equb Groups"

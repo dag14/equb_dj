@@ -8,23 +8,32 @@ class EqubGroupSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "description",
-            "status",     
+            "status",
             "rotation_rule",
-            "max_members",
-            "start_date",
-            "end_date",
+            "contribution_amount",
+            "total_cycles",
+            "current_cycle",
             "created_at",
-            "updated_at"
+            "started_at",
+            "completed_at",
+            "admin",
         ]
-        read_only_fields = ["status", "created_at", "updated_at"]
+        read_only_fields = ["status", "created_at", "started_at", "completed_at", "current_cycle"]
 
-    def validate_max_members(self, value):
-        if value < 3:
-            raise serializers.ValidationError("Equb group must have at least 3 members.")
+    def validate_total_cycles(self, value):
+        if value < 1:
+            raise serializers.ValidationError("Total cycles must be at least 1.")
         return value
+
+    def validate_contribution_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Contribution amount must be positive.")
+        return value
+
     def validate(self, data):
-        start_date = data.get('start_date')
-        end_date = data.get('end_date')
-        if start_date and end_date and start_date >= end_date:
-            raise serializers.ValidationError("start_date must be before end_date.")
+        started_at = data.get('started_at')
+        completed_at = data.get('completed_at')
+        if started_at and completed_at and started_at >= completed_at:
+            raise serializers.ValidationError("started_at must be before completed_at.")
         return data
+

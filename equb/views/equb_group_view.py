@@ -8,4 +8,5 @@ class EqubGroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
 
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+        serializer.save(admin=self.request.user)
+
