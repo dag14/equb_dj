@@ -6,3 +6,5 @@ class PayoutScheduleViewSet(viewsets.ModelViewSet):
     queryset = PayoutSchedule.objects.all()
     serializer_class = PayoutScheduleSerializer
     permission_classes = [permissions.IsAuthenticated]  # tighten later
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["group", "member", "status", "scheduled_date"]

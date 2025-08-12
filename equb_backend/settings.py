@@ -40,7 +40,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'equb',
     'core',
+    'django_filters',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
+}
 AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
