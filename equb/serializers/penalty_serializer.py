@@ -13,11 +13,11 @@ class PenaltySerializer(serializers.ModelSerializer):
             "member_username",
             "group_name",
             "reason",
-            "amount",
-            "issued_at",
+            "computed_amount",
+            "applied_at",
             "status"
         ]
-        read_only_fields = ["issued_at"]
+        read_only_fields = ["applied_at"]
 
     def validate_amount(self, value):
         if value <= 0:

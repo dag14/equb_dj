@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions
 from equb.models import EqubGroup
 from equb.serializers.equb_group_serializer import EqubGroupSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 class EqubGroupViewSet(viewsets.ModelViewSet):
     queryset = EqubGroup.objects.all()

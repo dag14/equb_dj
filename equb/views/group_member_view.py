@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions
 from equb.models import GroupMember
 from equb.serializers.group_member_serializer import GroupMemberSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 class GroupMemberViewSet(viewsets.ModelViewSet):
     queryset = GroupMember.objects.all()
