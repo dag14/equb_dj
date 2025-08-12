@@ -11,7 +11,12 @@ equb_backend
 │  │     ├─ 0001_initial.cpython-313.pyc
 │  │     └─ __init__.cpython-313.pyc
 │  ├─ models.py
+│  ├─ serializers
+│  │  └─ user_serializer.py
 │  ├─ tests.py
+│  ├─ urls.py
+│  ├─ views
+│  │  └─ user_view.py
 │  ├─ views.py
 │  ├─ __init__.py
 │  └─ __pycache__
@@ -24,11 +29,9 @@ equb_backend
 │  ├─ apps.py
 │  ├─ migrations
 │  │  ├─ 0001_initial.py
-│  │  ├─ 0002_groupmember.py
 │  │  ├─ __init__.py
 │  │  └─ __pycache__
 │  │     ├─ 0001_initial.cpython-313.pyc
-│  │     ├─ 0002_groupmember.cpython-313.pyc
 │  │     └─ __init__.cpython-313.pyc
 │  ├─ models
 │  │  ├─ contribution.py
@@ -41,16 +44,32 @@ equb_backend
 │  │     ├─ penalty.cpython-313.pyc
 │  │     └─ __init__.cpython-313.pyc
 │  ├─ serializers
+│  │  ├─ contribution_serializer.py
 │  │  ├─ equb_group_serializer.py
+│  │  ├─ group_member_serializer.py
+│  │  ├─ payout_schedule_serializer.py
+│  │  ├─ penalty_serializer.py
 │  │  └─ __pycache__
-│  │     └─ equb_group_serializer.cpython-313.pyc
+│  │     ├─ contribution_serializer.cpython-313.pyc
+│  │     ├─ equb_group_serializer.cpython-313.pyc
+│  │     ├─ group_member_serializer.cpython-313.pyc
+│  │     ├─ payout_schedule_serializer.cpython-313.pyc
+│  │     └─ penalty_serializer.cpython-313.pyc
 │  ├─ tests.py
 │  ├─ urls.py
 │  ├─ views
+│  │  ├─ contribution_view.py
 │  │  ├─ equb_group_view.py
+│  │  ├─ group_member_view.py
+│  │  ├─ payout_schedule_view.py
+│  │  ├─ penalty_view.py
 │  │  ├─ __init__.py
 │  │  └─ __pycache__
+│  │     ├─ contribution_view.cpython-313.pyc
 │  │     ├─ equb_group_view.cpython-313.pyc
+│  │     ├─ group_member_view.cpython-313.pyc
+│  │     ├─ payout_schedule_view.cpython-313.pyc
+│  │     ├─ penalty_view.cpython-313.pyc
 │  │     └─ __init__.cpython-313.pyc
 │  ├─ views.py
 │  ├─ __init__.py
@@ -74,6 +93,7 @@ equb_backend
 │     └─ __init__.cpython-313.pyc
 ├─ manage.py
 ├─ README.md
+├─ requirements.txt
 └─ venv
    ├─ Include
    ├─ Lib
@@ -107,6 +127,7 @@ equb_backend
    │     │  │  └─ LICENSE
    │     │  ├─ METADATA
    │     │  ├─ RECORD
+   │     │  ├─ REQUESTED
    │     │  ├─ top_level.txt
    │     │  └─ WHEEL
    │     ├─ django
@@ -7322,6 +7343,137 @@ equb_backend
    │     │  ├─ REQUESTED
    │     │  ├─ top_level.txt
    │     │  └─ WHEEL
+   │     ├─ django_filter-25.1.dist-info
+   │     │  ├─ INSTALLER
+   │     │  ├─ LICENSE
+   │     │  ├─ METADATA
+   │     │  ├─ RECORD
+   │     │  ├─ REQUESTED
+   │     │  └─ WHEEL
+   │     ├─ django_filters
+   │     │  ├─ compat.py
+   │     │  ├─ conf.py
+   │     │  ├─ constants.py
+   │     │  ├─ exceptions.py
+   │     │  ├─ fields.py
+   │     │  ├─ filters.py
+   │     │  ├─ filterset.py
+   │     │  ├─ locale
+   │     │  │  ├─ ar
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ be
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ bg
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ cs
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ da
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ de
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ el
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ es
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ es_AR
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ fa
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ fi
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ fr
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ it
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ nl
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ pl
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ pt_BR
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ ro
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ ru
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ sk
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  ├─ uk
+   │     │  │  │  └─ LC_MESSAGES
+   │     │  │  │     ├─ django.mo
+   │     │  │  │     └─ django.po
+   │     │  │  └─ zh_CN
+   │     │  │     └─ LC_MESSAGES
+   │     │  │        ├─ django.mo
+   │     │  │        └─ django.po
+   │     │  ├─ rest_framework
+   │     │  │  ├─ backends.py
+   │     │  │  ├─ filters.py
+   │     │  │  ├─ filterset.py
+   │     │  │  ├─ __init__.py
+   │     │  │  └─ __pycache__
+   │     │  │     ├─ backends.cpython-313.pyc
+   │     │  │     ├─ filters.cpython-313.pyc
+   │     │  │     ├─ filterset.cpython-313.pyc
+   │     │  │     └─ __init__.cpython-313.pyc
+   │     │  ├─ templates
+   │     │  │  └─ django_filters
+   │     │  │     ├─ rest_framework
+   │     │  │     │  ├─ crispy_form.html
+   │     │  │     │  └─ form.html
+   │     │  │     └─ widgets
+   │     │  │        └─ multiwidget.html
+   │     │  ├─ utils.py
+   │     │  ├─ views.py
+   │     │  ├─ widgets.py
+   │     │  ├─ __init__.py
+   │     │  └─ __pycache__
+   │     │     ├─ compat.cpython-313.pyc
+   │     │     ├─ conf.cpython-313.pyc
+   │     │     ├─ constants.cpython-313.pyc
+   │     │     ├─ exceptions.cpython-313.pyc
+   │     │     ├─ fields.cpython-313.pyc
+   │     │     ├─ filters.cpython-313.pyc
+   │     │     ├─ filterset.cpython-313.pyc
+   │     │     ├─ utils.cpython-313.pyc
+   │     │     ├─ views.cpython-313.pyc
+   │     │     ├─ widgets.cpython-313.pyc
+   │     │     └─ __init__.cpython-313.pyc
    │     ├─ pip
    │     │  ├─ py.typed
    │     │  ├─ _internal
@@ -8877,6 +9029,7 @@ equb_backend
    │     │  │  └─ LICENSE
    │     │  ├─ METADATA
    │     │  ├─ RECORD
+   │     │  ├─ REQUESTED
    │     │  └─ WHEEL
    │     ├─ tzdata
    │     │  ├─ zoneinfo
@@ -9579,6 +9732,7 @@ equb_backend
    │        │     └─ LICENSE_APACHE
    │        ├─ METADATA
    │        ├─ RECORD
+   │        ├─ REQUESTED
    │        ├─ top_level.txt
    │        └─ WHEEL
    ├─ pyvenv.cfg
