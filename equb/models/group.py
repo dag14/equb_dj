@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -13,7 +14,8 @@ class EqubGroup(models.Model):
         (STATUS_STARTED, 'Started'),
         (STATUS_COMPLETED, 'Completed'),
     ]
-
+    
+    id = models.UUIDField(primary_key=True, default = uuid.uuid4, editable = False)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     admin = models.ForeignKey(
@@ -68,12 +70,12 @@ class EqubGroup(models.Model):
         if self.status == self.STATUS_PENDING:
             if self.started_at or self.completed_at:
                 raise ValidationError("Pending groups cannot have started_at or completed_at set.")
-
-        member_count = self.memberships.filter(status=GroupMember.STATUS_ACTIVE).count()
-        if self.total_cycles < member_count:
-            raise ValidationError(f"Total cycles ({self.total_cycles}) cannot be less than the number of active members ({member_count}).")
-        if self.contribution_amount <= Decimal('0'):
-            raise ValidationError("Contribution amount must be a positive number.")
+        if self.pk:
+            member_count = self.memberships.filter(status=GroupMember.STATUS_ACTIVE).count()
+            if self.total_cycles < member_count:
+                raise ValidationError(f"Total cycles ({self.total_cycles}) cannot be less than the number of active members ({member_count}).")
+            if self.contribution_amount <= Decimal('0'):
+                raise ValidationError("Contribution amount must be a positive number.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -98,7 +100,7 @@ class GroupMember(models.Model):
         (STATUS_LEFT, 'Left'),
         (STATUS_REMOVED, 'Removed'),
     ]
-
+    id = models.UUIDField(primary_key=True, default = uuid.uuid4, editable = False)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

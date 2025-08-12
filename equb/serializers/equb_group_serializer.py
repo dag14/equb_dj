@@ -18,7 +18,7 @@ class EqubGroupSerializer(serializers.ModelSerializer):
             "completed_at",
             "admin",
         ]
-        read_only_fields = ["status", "created_at", "started_at", "completed_at", "current_cycle"]
+        read_only_fields = ["status", "created_at", "started_at", "completed_at", "current_cycle", "admin"]
 
     def validate_total_cycles(self, value):
         if value < 1:
