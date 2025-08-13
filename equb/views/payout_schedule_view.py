@@ -8,4 +8,4 @@ class PayoutScheduleViewSet(viewsets.ModelViewSet):
     serializer_class = PayoutScheduleSerializer
     permission_classes = [permissions.IsAuthenticated]  # to be tightened later
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["group", "member", "status", "scheduled_date"]
+    filterset_fields = ["group", "recipient", "status", "scheduled_date"]
