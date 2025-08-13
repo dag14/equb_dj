@@ -21,7 +21,9 @@ class EqubGroup(models.Model):
     admin = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='owned_groups'
+        related_name='owned_groups',
+        null=True,  # allow temporary None
+        blank=True
     )
     status = models.CharField(
         max_length=10,
@@ -61,8 +63,11 @@ class EqubGroup(models.Model):
         return f"{self.name} ({self.status})"
 
     def clean(self):
-        if not self.admin:
-            raise ValidationError("Group must have an admin.")
+        # if not self.admin:
+        #     raise ValidationError("Group must have an admin.")
+        if self.admin is None:
+        # Skip raising error in development
+            return
         if self.status == self.STATUS_STARTED and not self.started_at:
             raise ValidationError("Started groups must have a started_at datetime.")
         if self.status == self.STATUS_COMPLETED and not self.completed_at:
