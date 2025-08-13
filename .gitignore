@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+
+# Migrations (optional: keep initial migrations if needed)
+**/migrations/*.py
+**/migrations/*.pyc
+!*/migrations/__init__.py
+
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
+.Python
+
+# Environments
+.env
+.env.*
+
