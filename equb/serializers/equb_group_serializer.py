@@ -19,6 +19,16 @@ class EqubGroupSerializer(serializers.ModelSerializer):
             "admin",
         ]
         read_only_fields = ["status", "created_at", "started_at", "completed_at", "current_cycle", "admin"]
+    # Override create () for testing purpose now
+    def create(self, validated_data):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            validated_data['admin'] = user
+        else:
+            # Bypass admin requirement for testing without login
+            validated_data['admin'] = None
+        return super().create(validated_data)
+    # Override create () for testing purpose now
 
     def validate_total_cycles(self, value):
         if value < 1:
