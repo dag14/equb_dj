@@ -9,6 +9,8 @@ class GroupMemberViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]  # I'll later tighten permissions
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["group", "user", "role", "status"]
+    search_fields = ['user__username', 'user__email', 'group__name']
+
 
     def perform_create(self, serializer):
         serializer.save()
