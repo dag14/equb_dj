@@ -2,6 +2,7 @@ from rest_framework import serializers
 from equb.models import EqubGroup
 
 class EqubGroupSerializer(serializers.ModelSerializer):
+    total_members = serializers.IntegerField(read_only=True)
     class Meta:
         model = EqubGroup
         fields = [
@@ -17,8 +18,9 @@ class EqubGroupSerializer(serializers.ModelSerializer):
             "started_at",
             "completed_at",
             "admin",
+            "total_members",
         ]
-        read_only_fields = ["status", "created_at", "started_at", "completed_at", "current_cycle", "admin"]
+        read_only_fields = ["status", "created_at", "started_at", "completed_at", "current_cycle", "admin",  "total_members",]
     # Override create () for testing purpose now
     def create(self, validated_data):
         user = self.context['request'].user
@@ -46,4 +48,5 @@ class EqubGroupSerializer(serializers.ModelSerializer):
         if started_at and completed_at and started_at >= completed_at:
             raise serializers.ValidationError("started_at must be before completed_at.")
         return data
-
+    def get_total_members(self, obj):
+        return obj.memberships.count()
