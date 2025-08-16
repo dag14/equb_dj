@@ -15,6 +15,7 @@ class EqubGroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny] # I'll later tighten permissions
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["status", "admin"]
+    lookup_field = "id"
 
     def perform_create(self, serializer):
         # serializer.save(admin=self.request.user)
