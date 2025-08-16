@@ -73,6 +73,10 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "cache-control",
+]
 
 ROOT_URLCONF = 'equb_backend.urls'
 
@@ -94,8 +98,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'equb_backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
