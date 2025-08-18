@@ -3,6 +3,8 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from decimal import Decimal
+from django.utils import timezone
+
 
 class EqubGroup(models.Model):
     STATUS_PENDING = 'pending'
@@ -85,6 +87,28 @@ class EqubGroup(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
+    def can_start(self):
+        # Only pending groups with at least 2 active members can start
+        active_members = self.memberships.filter(status=GroupMember.STATUS_ACTIVE).count()
+        return self.status == self.STATUS_PENDING and active_members >= 2
+
+    def can_complete(self):
+        # Only started groups can be completed
+        return self.status == self.STATUS_STARTED
+
+    def start(self):
+        if not self.can_start():
+            raise ValidationError("Group cannot be started yet. Ensure it is pending and has enough active members.")
+        self.status = self.STATUS_STARTED
+        self.started_at = timezone.now()
+        self.save()
+
+    def complete(self):
+        if not self.can_complete():
+            raise ValidationError("Group cannot be completed yet. Only started groups can be completed.")
+        self.status = self.STATUS_COMPLETED
+        self.completed_at = timezone.now()
+        self.save()
 
 
 class GroupMember(models.Model):

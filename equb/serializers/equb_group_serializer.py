@@ -17,7 +17,7 @@ class GroupMemberSerializer(serializers.ModelSerializer):
         fields = ["id", "role", "status", "contributions", "has_won", "user"]
 
 class EqubGroupSerializer(serializers.ModelSerializer):
-    total_members = serializers.IntegerField(read_only=True)
+    total_members = serializers.IntegerField(read_only=True, source='total_members')
     members = GroupMemberSerializer(source="memberships", many=True, read_only=True)
 
     class Meta:
@@ -36,7 +36,7 @@ class EqubGroupSerializer(serializers.ModelSerializer):
             "completed_at",
             "admin",
             "total_members",
-            "members",  # 👈 now included
+            "members",  
         ]
         read_only_fields = [
             "status",
