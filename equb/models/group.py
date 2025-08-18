@@ -127,6 +127,8 @@ class GroupMember(models.Model):
         default=STATUS_ACTIVE
     )
     joined_at = models.DateTimeField(auto_now_add=True)
+    has_won = models.BooleanField(default=False)
+
 
     class Meta:
         constraints = [
