@@ -36,7 +36,7 @@ class EqubGroupSerializer(serializers.ModelSerializer):
             "completed_at",
             "admin",
             "total_members",
-            "members",  # 👈 now included
+            "members",  
         ]
         read_only_fields = [
             "status",
